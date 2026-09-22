@@ -1,0 +1,29 @@
+name = "qunxing-llm-proxy"
+main = "src/index.ts"
+compatibility_date = "2025-01-15"
+
+# 非敏感配置（敏感的上游 Key 用 wrangler secret put UPSTREAM_API_KEY 设置）
+[vars]
+# 上游 OpenAI 兼容接口，可选 Moonshot / DeepSeek / OpenAI 等
+UPSTREAM_BASE_URL = "https://api.deepseek.com/v1"
+# Worker 强制使用的模型（忽略客户端传入的 model 字段）
+UPSTREAM_MODEL = "deepseek-chat"
+# 允许的前端来源（逗号分隔）；部署后把 GitHub Pages 域名加进来
+ALLOWED_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
+
+# 可选：图像生成代理（/v1/images/generations）。
+# 默认人物画像走免费免 Key 的 pollinations.ai（浏览器直连），无需以下配置；
+# 只有前端设置了 VITE_IMAGE_BASE_URL 指向本 Worker 时才需要：
+#   wrangler secret put IMAGE_API_KEY
+# IMAGE_BASE_URL = "https://api.openai.com/v1"
+# IMAGE_MODEL = "dall-e-3"
+
+# 可选：语录检索站点覆盖（/v1/quotes，默认 https://cn.bing.com）
+# BING_BASE = "https://cn.bing.com"
+
+# 可选：基于 KV 的全局 IP 限流（10 次/天/IP）。
+# 不配置时回退为单 isolate 内存限流（best-effort，见 README）。
+# 创建：wrangler kv namespace create RATE_LIMIT_KV，把 id 填到下面并取消注释
+# [[kv_namespaces]]
+# binding = "RATE_LIMIT_KV"
+# id = "<your-kv-namespace-id>"
