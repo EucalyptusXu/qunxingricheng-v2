@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/api/chat/completions",
+      "destination": "/api/chat"
+    },
+    {
+      "source": "/api/image/images/generations",
+      "destination": "/api/image"
+    }
+  ]
+}
